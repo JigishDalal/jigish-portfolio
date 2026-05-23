@@ -72,7 +72,7 @@ export default function Nav() {
               {link.label}
             </Link>
           ))}
-          {<Link
+          {/* {<Link
             to="/admin"
             style={{
               marginLeft: '8px',
@@ -88,7 +88,7 @@ export default function Nav() {
               letterSpacing: '0.02em',
             }}
           >
-          </Link>}
+          </Link>} */}
         </div>
 
         {/* Mobile burger */}
