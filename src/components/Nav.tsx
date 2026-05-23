@@ -3,11 +3,11 @@ import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const NAV_LINKS = [
-  { label: 'Home',       href: '#home',    section: 'home' },
-  { label: 'Skills',     href: '#skills',  section: 'skills' },
-  { label: 'Journey',    href: '#journey', section: 'journey' },
-  { label: 'Works',      href: '#works',   section: 'works' },
-  { label: 'Blog',       href: '/blog',     section: '' },
+  { label: 'Home', href: '#home', section: 'home' },
+  { label: 'Skills', href: '#skills', section: 'skills' },
+  { label: 'Journey', href: '#journey', section: 'journey' },
+  { label: 'Works', href: '#works', section: 'works' },
+  { label: 'Blog', href: '/blog', section: '' },
 ];
 
 export default function Nav() {
@@ -72,7 +72,7 @@ export default function Nav() {
               {link.label}
             </Link>
           ))}
-          <Link
+          {/* <Link
             to="/admin"
             style={{
               marginLeft: '8px',
@@ -89,7 +89,7 @@ export default function Nav() {
             }}
           >
             Admin
-          </Link>
+          </Link> */}
         </div>
 
         {/* Mobile burger */}
@@ -108,8 +108,8 @@ export default function Nav() {
         >
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             {menuOpen
-              ? <><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></>
-              : <><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></>
+              ? <><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></>
+              : <><line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="18" x2="21" y2="18" /></>
             }
           </svg>
         </button>
