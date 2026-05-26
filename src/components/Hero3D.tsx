@@ -1,4 +1,6 @@
-import { useEffect } from 'react';
+import { useEffect, lazy, Suspense } from 'react';
+
+const HeroScene3D = lazy(() => import('./HeroScene3D'));
 
 export default function Hero3D() {
   useEffect(() => {
@@ -100,6 +102,11 @@ export default function Hero3D() {
 
   return (
     <section id="home" className="hero bento-hero">
+      {/* 3D Background Canvas — lazy loaded for performance */}
+      <Suspense fallback={null}>
+        <HeroScene3D />
+      </Suspense>
+
       <div className="hero-bento-grid">
 
         {/* Main large typography card */}
@@ -112,7 +119,7 @@ export default function Hero3D() {
           <div className="corner-br" />
           <p className="hero-kicker">Available for new opportunities</p>
           <h1 className="bento-title cursor-text-zone">
-            Hi, I’m Jigish <br />
+            Hi, I'm Jigish <br />
             Crafting premium mobile experiences.
           </h1>
           <p className="bento-desc">

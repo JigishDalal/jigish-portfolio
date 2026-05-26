@@ -471,6 +471,20 @@ h1, h2, h3, h4, h5 {
   --hero-scroll: 0;
 }
 
+/* 3D Canvas wrapper — sits behind all bento content */
+.hero-canvas-wrapper {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease-out;
+}
+
+.hero-canvas-wrapper canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
 .hero-bento-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -480,6 +494,8 @@ h1, h2, h3, h4, h5 {
   margin: 0 auto;
   transform: translateY(calc(var(--hero-scroll) * -18px));
   transition: transform 0.18s ease-out;
+  position: relative;
+  z-index: 1;
 }
 
 .bento-hero.is-scroll-active .bento-card {
