@@ -15,6 +15,7 @@ import BlogPage from './components/Blog';
 import BlogPostPage from './components/BlogPost';
 import AdminLogin from './components/admin/AdminLogin';
 import AdminDashboard from './components/admin/AdminDashboard';
+import NotFound from './components/NotFound';
 import { useAdmin } from './hooks/useAdmin';
 
 /* ── Progress bar ───────────────────────────────────────────── */
@@ -90,16 +91,7 @@ function AppLayout() {
         <Route path="/admin/dashboard" element={<ProtectedAdmin />} />
 
         {/* 404 fallback */}
-        <Route
-          path="*"
-          element={
-            <div style={{ minHeight: '100svh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '16px' }}>
-              <div style={{ fontSize: '64px' }}>🌌</div>
-              <h1 style={{ color: 'var(--color-text)', fontSize: '32px' }}>404 — Lost in Space</h1>
-              <a href="/" className="btn-primary">← Back to Earth</a>
-            </div>
-          }
-        />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );
