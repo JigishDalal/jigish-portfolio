@@ -7,7 +7,6 @@ const NAV_LINKS = [
   { label: 'Skills', href: '#skills', section: 'skills' },
   { label: 'Journey', href: '#journey', section: 'journey' },
   { label: 'Works', href: '#works', section: 'works' },
-  { label: 'Blog', href: '/blog', section: '' },
 ];
 
 export default function Nav() {
@@ -149,14 +148,6 @@ export default function Nav() {
                 {link.label}
               </Link>
             ))}
-            <Link
-              to="/admin"
-              className="nav-link"
-              style={{ borderRadius: '10px', color: 'var(--color-primary-2)', display: 'block' }}
-              onClick={() => setMenuOpen(false)}
-            >
-              Admin Panel
-            </Link>
           </motion.div>
         )}
       </AnimatePresence>
