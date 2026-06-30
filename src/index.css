@@ -2432,6 +2432,11 @@ h5 {
   .admin-content {
     padding: 20px;
   }
+
+  /* Hide Blog page header on mobile */
+  .blog-page-header {
+    display: none !important;
+  }
 }
 
 @media (max-width: 480px) {

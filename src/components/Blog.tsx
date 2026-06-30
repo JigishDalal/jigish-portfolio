@@ -108,6 +108,7 @@ export default function BlogPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           style={{ marginBottom: '48px' }}
+          className="blog-page-header"
         >
           <Link to="/" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', color: 'var(--color-text-dim)', fontSize: '13px', marginBottom: '24px', transition: 'color 0.2s' }}
             onMouseEnter={e => (e.currentTarget.style.color = 'var(--color-primary-2)')}
