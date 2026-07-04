@@ -126,8 +126,8 @@ export default function Hero3D() {
             I specialize in scalable mobile apps, real-time systems, intelligent workflows, and modern user experiences across fintech, healthcare, and enterprise platforms.
           </p>
           <div className="hero-actions">
-            <a href="/blog" className="bento-btn bento-btn-dark">
-              Read the blog
+            <a href="#works" className="bento-btn bento-btn-dark">
+              View projects
             </a>
             <a href="#journey" className="bento-btn">
               About me
