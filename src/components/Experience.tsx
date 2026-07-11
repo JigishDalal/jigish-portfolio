@@ -139,7 +139,7 @@ export default function Experience() {
                 <div className="release-main">
                   <div className="release-title-row">
                     <div>
-                      <h3>{exp.company}</h3>
+                      <h3 className="release-company">{exp.company}</h3>
                       <p>{exp.role}</p>
                     </div>
                     <span className="release-period">{exp.period}</span>

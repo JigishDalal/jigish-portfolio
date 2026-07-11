@@ -6,21 +6,29 @@
 :root {
   --color-bg: #ffffff;
   --color-canvas: #ffffff;
-  --color-surface: #f5f5f7; /* canvas-parchment */
-  --color-surface-2: #fafafc; /* surface-pearl */
-  --color-border: #e0e0e0; /* hairline */
-  --color-border-2: #d2d2d7; /* surface-chip-translucent or hairline-2 */
+  --color-surface: #f5f5f7;
+  /* canvas-parchment */
+  --color-surface-2: #fafafc;
+  /* surface-pearl */
+  --color-border: #e0e0e0;
+  /* hairline */
+  --color-border-2: #d2d2d7;
+  /* surface-chip-translucent or hairline-2 */
 
-  --color-primary: #0066cc; /* Action Blue */
+  --color-primary: #0066cc;
+  /* Action Blue */
   --color-primary-focus: #0071e3;
   --color-primary-on-dark: #2997ff;
-  --color-primary-2: #0066cc; /* Action Blue as secondary brand signal */
+  --color-primary-2: #0066cc;
+  /* Action Blue as secondary brand signal */
   --color-accent: #0066cc;
   --color-accent-2: #2997ff;
   --color-cyan: #2997ff;
 
-  --color-text: #1d1d1f; /* ink */
-  --color-text-muted: #86868b; /* ink-muted-48 */
+  --color-text: #1d1d1f;
+  /* ink */
+  --color-text-muted: #86868b;
+  /* ink-muted-48 */
   --color-text-dim: #7a7a7a;
 
   --font-heading: "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, "Inter", sans-serif;
@@ -28,15 +36,20 @@
   --font-mono: "SF Mono", SFProText-Regular, "Space Mono", Monaco, Consolas, monospace;
 
   /* radii matching Apple's scale */
-  --radius-sm: 8px;   /* rounded.sm */
-  --radius-md: 11px;  /* rounded.md */
-  --radius-lg: 18px;  /* rounded.lg */
+  --radius-sm: 8px;
+  /* rounded.sm */
+  --radius-md: 11px;
+  /* rounded.md */
+  --radius-lg: 18px;
+  /* rounded.lg */
   --radius-xl: 18px;
-  --radius-full: 9999px; /* rounded.pill */
+  --radius-full: 9999px;
+  /* rounded.pill */
 
   --shadow-glow-primary: none;
   --shadow-glow-accent: none;
-  --shadow-card: none; /* Apple doesn't use card shadows, only flat layout with borders or colors */
+  --shadow-card: none;
+  /* Apple doesn't use card shadows, only flat layout with borders or colors */
   --product-shadow: rgba(0, 0, 0, 0.22) 3px 5px 30px 0;
 }
 
@@ -1226,6 +1239,10 @@ h5 {
   color: #ffffff !important;
 }
 
+.experience-section h3.release-company {
+  color: var(--accent) !important;
+}
+
 .experience-section .section-subtitle,
 .experience-section .experience-preview,
 .experience-section .experience-detail {
@@ -1233,7 +1250,8 @@ h5 {
 }
 
 .experience-section .experience-card {
-  background: #2a2a2c !important; /* surface-tile-2 */
+  background: #2a2a2c !important;
+  /* surface-tile-2 */
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
   color: #ffffff !important;
   box-shadow: none !important;
@@ -1243,7 +1261,7 @@ h5 {
 .experience-section .experience-summary span,
 .experience-section .experience-chips span {
   background: rgba(255, 255, 255, 0.06) !important;
-  color: #cccccc !important;
+  color: #000000 !important;
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 
@@ -1288,7 +1306,7 @@ h5 {
   font-size: 11px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--color-text-muted);
+  color: #000000;
   border: 1px solid var(--color-border);
   border-radius: 999px;
   padding: 6px 10px;
@@ -1597,6 +1615,10 @@ h5 {
   font-size: 21px;
   line-height: 1.2;
   margin-bottom: 4px;
+}
+
+.release-company {
+  color: var(--accent);
 }
 
 .release-title-row p {
