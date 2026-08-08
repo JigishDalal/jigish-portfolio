@@ -113,7 +113,7 @@ export default function VentureCheck() {
 
         @media (max-width: 600px) {
           .vc-hero-title {
-            font-size: 3rem;
+            font-size: 2.5rem;
           }
         }
 
@@ -122,6 +122,12 @@ export default function VentureCheck() {
           color: #4a5568;
           line-height: 1.6;
           margin-bottom: 2.5rem;
+        }
+
+        @media (max-width: 600px) {
+          .vc-hero-subtitle {
+            font-size: 1.1rem;
+          }
         }
 
         .vc-hero-buttons {
@@ -236,9 +242,10 @@ export default function VentureCheck() {
         }
 
         @media (max-width: 600px) {
-          .vc-phone-mockup { width: 220px; }
-          .vc-phone-1 { transform: rotate(-5deg) translateX(-20px); }
-          .vc-phone-2 { transform: rotate(5deg) translateX(40px) scale(0.95); }
+          .vc-phone-mockup { width: 180px; }
+          .vc-phone-1 { transform: rotate(-5deg) translateX(-15px); }
+          .vc-phone-2 { transform: rotate(5deg) translateX(30px) translateY(20px) scale(0.95); }
+          .vc-hero-images { height: 400px; }
         }
 
         /* Hover Tooltips */
@@ -427,6 +434,11 @@ export default function VentureCheck() {
           margin-bottom: 1.25rem;
           letter-spacing: -0.02em;
         }
+        
+        @media (max-width: 600px) {
+          .vc-step-title { font-size: 1.75rem; }
+          .vc-step-number { font-size: 3.5rem; }
+        }
 
         .vc-step-desc {
           font-size: 1.15rem;
@@ -446,6 +458,10 @@ export default function VentureCheck() {
           background: #fff;
           padding: 8px;
           box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+        }
+        
+        @media (max-width: 600px) {
+          .vc-step-mockup { width: 100%; max-width: 260px; }
         }
 
         .vc-step-mockup img {
@@ -470,6 +486,11 @@ export default function VentureCheck() {
           font-weight: 700;
           letter-spacing: -0.02em;
           margin-bottom: 1.5rem;
+        }
+        
+        @media (max-width: 600px) {
+          .vc-cta-title { font-size: 2rem; }
+          .vc-cta-section { padding: 3rem 1.5rem; }
         }
 
         .vc-cta-desc {
