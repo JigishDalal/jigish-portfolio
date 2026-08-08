@@ -7,6 +7,7 @@ const NAV_LINKS = [
   { label: 'Skills', href: '/#skills', isAnchor: true, hash: 'skills' },
   { label: 'Journey', href: '/#journey', isAnchor: true, hash: 'journey' },
   { label: 'Works', href: '/#works', isAnchor: true, hash: 'works' },
+  { label: 'VentureCheck', href: '/projects/venturecheck', isAnchor: false },
 ];
 
 export default function Nav() {

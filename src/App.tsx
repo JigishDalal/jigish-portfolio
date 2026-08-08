@@ -16,6 +16,7 @@ import BlogPostPage from './components/BlogPost';
 import AdminLogin from './components/admin/AdminLogin';
 import AdminDashboard from './components/admin/AdminDashboard';
 import NotFound from './components/NotFound';
+import VentureCheck from './components/VentureCheck';
 import { useAdmin } from './hooks/useAdmin';
 
 /* ── Progress bar ───────────────────────────────────────────── */
@@ -62,6 +63,16 @@ function AppLayout() {
             <>
               <Nav />
               <HomePage />
+            </>
+          }
+        />
+        <Route
+          path="/projects/venturecheck"
+          element={
+            <>
+              <Nav />
+              <VentureCheck />
+              <Footer />
             </>
           }
         />

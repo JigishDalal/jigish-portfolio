@@ -97,19 +97,43 @@ const defaultPortfolio: PortfolioItem[] = [
     featured: false,
     year: '2024',
   },
+  {
+    id: '7',
+    title: 'VentureCheck',
+    category: 'Web App',
+    description:
+      'A comprehensive tracking and analysis platform for new ventures. App details and plans with animations.',
+    tech: ['React', 'TypeScript', 'Framer Motion', 'Node.js', 'PostgreSQL'],
+    links: { live: '/projects/venturecheck', github: 'https://github.com/JigishDalal/ventureCheck' },
+    coverColor: 'linear-gradient(135deg, #3b82f6, #10b981)',
+    featured: true,
+    year: '2024',
+  },
 ];
 
 const STORAGE_KEY = 'jigish_portfolio_items';
 
 export function getPortfolioItems(): PortfolioItem[] {
+  let items = [...defaultPortfolio];
   try {
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored) {
       const parsed = JSON.parse(stored) as PortfolioItem[];
-      if (parsed.length > 0) return parsed;
+      if (parsed.length > 0) {
+        // Keep stored items but append any new default items that aren't in storage yet
+        const storedIds = new Set(parsed.map(i => i.id));
+        const newItems = defaultPortfolio.filter(i => !storedIds.has(i.id));
+        items = [...parsed, ...newItems];
+        
+        // Save back if we added new items
+        if (newItems.length > 0) {
+          savePortfolioItems(items);
+        }
+        return items;
+      }
     }
   } catch { }
-  return defaultPortfolio;
+  return items;
 }
 
 export function savePortfolioItems(items: PortfolioItem[]): void {
