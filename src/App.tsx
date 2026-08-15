@@ -17,6 +17,8 @@ import AdminLogin from './components/admin/AdminLogin';
 import AdminDashboard from './components/admin/AdminDashboard';
 import NotFound from './components/NotFound';
 import VentureCheck from './components/VentureCheck';
+import AskJigish from './components/AskJigish';
+import FloatingCharacter from './components/FloatingCharacter';
 import { useAdmin } from './hooks/useAdmin';
 
 /* ── Progress bar ───────────────────────────────────────────── */
@@ -31,10 +33,12 @@ function HomePage() {
   return (
     <>
       <Hero3D />
+      <AskJigish />
       <Skills />
       <Experience />
       <Projects />
       <Footer />
+      <FloatingCharacter />
     </>
   );
 }

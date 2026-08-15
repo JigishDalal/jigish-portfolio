@@ -3,11 +3,11 @@ import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const NAV_LINKS = [
-  { label: 'Home', href: '/#home', isAnchor: true, hash: 'home' },
-  { label: 'Skills', href: '/#skills', isAnchor: true, hash: 'skills' },
-  { label: 'Journey', href: '/#journey', isAnchor: true, hash: 'journey' },
   { label: 'Works', href: '/#works', isAnchor: true, hash: 'works' },
   { label: 'VentureCheck', href: '/projects/venturecheck', isAnchor: false },
+  { label: 'Skills', href: '/#skills', isAnchor: true, hash: 'skills' },
+  { label: 'Experience', href: '/#journey', isAnchor: true, hash: 'journey' },
+  { label: 'Contact', href: '#contact', isAnchor: true, hash: 'contact' },
 ];
 
 export default function Nav() {
@@ -49,7 +49,7 @@ export default function Nav() {
       <header className="sub-nav">
         <div className="sub-nav-container">
           <Link to="/" className="sub-nav-title">
-            Jigish Dalal
+            Jigish.
           </Link>
 
           {/* Right section: Links + Blue pill button */}

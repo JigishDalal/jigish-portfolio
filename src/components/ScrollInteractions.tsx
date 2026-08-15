@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-const SECTION_IDS = ['home', 'skills', 'journey', 'works'];
+const SECTION_IDS = ['home', 'ask', 'skills', 'journey', 'works'];
 
 function clamp(value: number, min = 0, max = 1) {
   return Math.min(Math.max(value, min), max);

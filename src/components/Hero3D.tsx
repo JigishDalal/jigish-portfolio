@@ -110,18 +110,13 @@ export default function Hero3D() {
       <div className="hero-bento-grid">
 
         {/* Main large typography card */}
-        <div
-          className="bento-card col-span-2 main-title-card"
-        >
+        <div className="bento-card col-span-3 main-title-card">
           <div className="corner-tl" />
           <div className="corner-tr" />
           <div className="corner-bl" />
           <div className="corner-br" />
           <p className="hero-kicker">Available for new opportunities</p>
-          <h1 className="bento-title cursor-text-zone">
-            Hi, I'm Jigish <br />
-            Crafting premium mobile experiences.
-          </h1>
+          <h1 className="bento-title cursor-text-zone">Hi, I'm Jigish</h1>
           <p className="bento-desc">
             I specialize in scalable mobile apps, real-time systems, intelligent workflows, and modern user experiences across fintech, healthcare, and enterprise platforms.
           </p>
@@ -137,35 +132,9 @@ export default function Hero3D() {
           <div className="hero-scroll-line" />
         </div>
 
-        {/* Small stats card */}
-        <div
-          className="bento-card flex-center stat-card"
-        >
+        <div className="bento-card flex-center stat-card hero-side-stat">
           <div className="stat-number"><span data-count-to="8">0</span>+</div>
           <div className="stat-label">Years of<br />Experience</div>
-        </div>
-
-        {/* Small stats card 2 */}
-        <div
-          className="bento-card flex-center stat-card"
-        >
-          <div className="stat-number"><span data-count-to="10">0</span>+</div>
-          <div className="stat-label">Apps<br />Shipped</div>
-        </div>
-
-        {/* Roles/Tags card */}
-        <div
-          className="bento-card tags-card col-span-2"
-        >
-          <ul className="bento-tags">
-            <li>FLUTTER</li>
-            <li>ANDROID</li>
-            <li>ARCHITECTURE</li>
-            <li>PERFORMANCE</li>
-            <li>FINTECH</li>
-            <li>HEALTHCARE</li>
-            <li>ENTERPRISE</li>
-          </ul>
         </div>
 
       </div>

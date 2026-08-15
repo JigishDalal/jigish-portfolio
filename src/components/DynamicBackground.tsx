@@ -1,235 +1,130 @@
-import { useRef } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { useGSAP } from '@gsap/react';
+import { useEffect, useRef } from 'react';
 
-gsap.registerPlugin(ScrollTrigger);
+const vertexShader = `
+attribute vec2 a_position;
+varying vec2 v_texCoord;
+
+void main() {
+  v_texCoord = a_position * 0.5 + 0.5;
+  gl_Position = vec4(a_position, 0.0, 1.0);
+}
+`;
+
+const fragmentShader = `
+precision highp float;
+varying vec2 v_texCoord;
+uniform float u_time;
+uniform vec2 u_resolution;
+
+void main() {
+  vec2 uv = v_texCoord;
+  vec2 p = uv * 2.0 - 1.0;
+  p.x *= u_resolution.x / u_resolution.y;
+
+  for(float i = 1.0; i < 6.0; i++){
+    p.x += 0.3 / i * sin(i * 3.0 * p.y + u_time * 0.4);
+    p.y += 0.3 / i * cos(i * 3.0 * p.x + u_time * 0.4);
+  }
+
+  float intensity = 0.5 + 0.5 * sin(p.x + p.y);
+
+  vec3 color1 = vec3(0.04, 0.07, 0.15);
+  vec3 color2 = vec3(0.12, 0.15, 0.25);
+  vec3 color3 = vec3(0.39, 0.40, 0.95);
+
+  vec3 finalColor = mix(color1, color2, intensity);
+  finalColor = mix(finalColor, color3, pow(intensity, 8.0) * 0.1);
+
+  gl_FragColor = vec4(finalColor, 1.0);
+}
+`;
+
+function compileShader(gl: WebGLRenderingContext, type: number, source: string) {
+  const shader = gl.createShader(type);
+  if (!shader) return null;
+
+  gl.shaderSource(shader, source);
+  gl.compileShader(shader);
+  return gl.getShaderParameter(shader, gl.COMPILE_STATUS) ? shader : null;
+}
 
 export default function DynamicBackground() {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  useGSAP(() => {
-    // Select all our circle elements
-    const circles = containerRef.current?.querySelectorAll('.scroll-circle');
-    if (!circles || circles.length === 0) return;
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
 
-    // Create a main scrubbed timeline keyed to the overall body scroll
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: 'body',
-        start: 'top top',
-        end: 'bottom bottom',
-        scrub: 1.2, // Smooth follow scrub matching scroll speed
+    const gl = (
+      canvas.getContext('webgl') || canvas.getContext('experimental-webgl')
+    ) as WebGLRenderingContext | null;
+    if (!gl) return;
+
+    const vertex = compileShader(gl, gl.VERTEX_SHADER, vertexShader);
+    const fragment = compileShader(gl, gl.FRAGMENT_SHADER, fragmentShader);
+    const program = gl.createProgram();
+    if (!vertex || !fragment || !program) return;
+
+    gl.attachShader(program, vertex);
+    gl.attachShader(program, fragment);
+    gl.linkProgram(program);
+    if (!gl.getProgramParameter(program, gl.LINK_STATUS)) return;
+
+    gl.useProgram(program);
+
+    const buffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
+
+    const position = gl.getAttribLocation(program, 'a_position');
+    gl.enableVertexAttribArray(position);
+    gl.vertexAttribPointer(position, 2, gl.FLOAT, false, 0, 0);
+
+    const uTime = gl.getUniformLocation(program, 'u_time');
+    const uResolution = gl.getUniformLocation(program, 'u_resolution');
+    let animationFrame = 0;
+
+    const syncSize = () => {
+      const width = canvas.clientWidth || window.innerWidth;
+      const height = canvas.clientHeight || window.innerHeight;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const nextWidth = Math.round(width * dpr);
+      const nextHeight = Math.round(height * dpr);
+
+      if (canvas.width !== nextWidth || canvas.height !== nextHeight) {
+        canvas.width = nextWidth;
+        canvas.height = nextHeight;
       }
-    });
+    };
 
-    // Circle 1: Top-Right (Scales up, rotates, and fades in)
-    tl.to('.circle-1', {
-      scale: 2.2,
-      rotation: 120,
-      opacity: 0.12,
-      ease: 'none'
-    }, 0);
+    const resizeObserver = new ResizeObserver(syncSize);
+    resizeObserver.observe(canvas);
+    syncSize();
 
-    // Circle 2: Middle-Left (Scales up, rotates, and fades in)
-    tl.to('.circle-2', {
-      scale: 1.8,
-      rotation: -90,
-      opacity: 0.15,
-      ease: 'none'
-    }, 0);
+    const render = (time: number) => {
+      syncSize();
+      gl.viewport(0, 0, canvas.width, canvas.height);
+      gl.uniform1f(uTime, time * 0.001);
+      gl.uniform2f(uResolution, canvas.width, canvas.height);
+      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+      animationFrame = requestAnimationFrame(render);
+    };
 
-    // Circle 3: Center Concentric (Huge expansion, subtle rotation)
-    tl.to('.circle-3', {
-      scale: 2.5,
-      rotation: 180,
-      opacity: 0.08,
-      ease: 'none'
-    }, 0);
+    animationFrame = requestAnimationFrame(render);
 
-    // Circle 4: Bottom-Right (Scales up, rotates, and fades in)
-    tl.to('.circle-4', {
-      scale: 1.6,
-      rotation: 60,
-      opacity: 0.14,
-      ease: 'none'
-    }, 0);
-
-  }, { scope: containerRef });
+    return () => {
+      cancelAnimationFrame(animationFrame);
+      resizeObserver.disconnect();
+      gl.deleteBuffer(buffer);
+      gl.deleteProgram(program);
+      gl.deleteShader(vertex);
+      gl.deleteShader(fragment);
+    };
+  }, []);
 
   return (
-    <div ref={containerRef} className="dynamic-bg-container" style={{ background: 'var(--color-bg)' }}>
-      {/* Circle 1: Top-Right */}
-      <div className="scroll-circle circle-1" style={{
-        position: 'absolute',
-        top: '15%',
-        right: '5%',
-        width: '350px',
-        height: '350px',
-        borderRadius: '50%',
-        border: '1.5px dashed rgba(0, 0, 0, 0.07)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        opacity: 0,
-        transform: 'scale(0.4)',
-        pointerEvents: 'none'
-      }}>
-        {/* Inner concentric ring */}
-        <div style={{
-          width: '75%',
-          height: '75%',
-          borderRadius: '50%',
-          border: '1px solid rgba(0, 0, 0, 0.04)',
-          position: 'relative'
-        }}>
-          {/* Faint crosshairs */}
-          <div style={{ position: 'absolute', top: '50%', left: '-10%', right: '-10%', height: '1px', background: 'rgba(0, 0, 0, 0.02)' }} />
-          <div style={{ position: 'absolute', left: '50%', top: '-10%', bottom: '-10%', width: '1px', background: 'rgba(0, 0, 0, 0.02)' }} />
-          <span style={{
-            position: 'absolute',
-            top: '8px',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            fontFamily: 'var(--font-mono)',
-            fontSize: '9px',
-            color: 'rgba(0, 0, 0, 0.15)',
-            letterSpacing: '0.1em'
-          }}>R-175</span>
-        </div>
-      </div>
-
-      {/* Circle 2: Middle-Left */}
-      <div className="scroll-circle circle-2" style={{
-        position: 'absolute',
-        top: '45%',
-        left: '-5%',
-        width: '450px',
-        height: '450px',
-        borderRadius: '50%',
-        border: '1px solid rgba(0, 0, 0, 0.06)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        opacity: 0,
-        transform: 'scale(0.3)',
-        pointerEvents: 'none'
-      }}>
-        <div style={{
-          width: '85%',
-          height: '85%',
-          borderRadius: '50%',
-          border: '1.5px dashed rgba(0, 0, 0, 0.03)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          position: 'relative'
-        }}>
-          <div style={{
-            width: '50%',
-            height: '50%',
-            borderRadius: '50%',
-            border: '1px solid rgba(0, 0, 0, 0.04)'
-          }} />
-          <span style={{
-            position: 'absolute',
-            bottom: '20px',
-            right: '20px',
-            fontFamily: 'var(--font-mono)',
-            fontSize: '8px',
-            color: 'rgba(0, 0, 0, 0.2)',
-          }}>SYS.LOC // 45.12</span>
-        </div>
-      </div>
-
-      {/* Circle 3: Center Concentric */}
-      <div className="scroll-circle circle-3" style={{
-        position: 'absolute',
-        top: '65%',
-        left: '40%',
-        width: '600px',
-        height: '600px',
-        borderRadius: '50%',
-        border: '2px solid rgba(0, 0, 0, 0.04)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        opacity: 0,
-        transform: 'scale(0.5)',
-        pointerEvents: 'none'
-      }}>
-        <div style={{
-          width: '90%',
-          height: '90%',
-          borderRadius: '50%',
-          border: '1px dashed rgba(0, 0, 0, 0.03)',
-          position: 'relative',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center'
-        }}>
-          <div style={{
-            width: '70%',
-            height: '70%',
-            borderRadius: '50%',
-            border: '1px solid rgba(0, 0, 0, 0.03)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}>
-            <div style={{
-              width: '40%',
-              height: '40%',
-              borderRadius: '50%',
-              border: '1px solid rgba(0, 0, 0, 0.05)',
-            }} />
-          </div>
-          {/* Plus sign labels */}
-          <div style={{ position: 'absolute', top: '-10px', color: 'rgba(0,0,0,0.2)', fontSize: '12px' }}>+</div>
-          <div style={{ position: 'absolute', bottom: '-10px', color: 'rgba(0,0,0,0.2)', fontSize: '12px' }}>+</div>
-          <div style={{ position: 'absolute', left: '-10px', color: 'rgba(0,0,0,0.2)', fontSize: '12px' }}>+</div>
-          <div style={{ position: 'absolute', right: '-10px', color: 'rgba(0,0,0,0.2)', fontSize: '12px' }}>+</div>
-        </div>
-      </div>
-
-      {/* Circle 4: Bottom-Right */}
-      <div className="scroll-circle circle-4" style={{
-        position: 'absolute',
-        bottom: '10%',
-        right: '2%',
-        width: '400px',
-        height: '400px',
-        borderRadius: '50%',
-        border: '1.5px solid rgba(0, 0, 0, 0.05)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        opacity: 0,
-        transform: 'scale(0.3)',
-        pointerEvents: 'none'
-      }}>
-        <div style={{
-          width: '80%',
-          height: '80%',
-          borderRadius: '50%',
-          border: '1px dashed rgba(0, 0, 0, 0.04)',
-          position: 'relative'
-        }}>
-          {/* Crosshairs */}
-          <div style={{ position: 'absolute', top: '50%', left: '-15%', right: '-15%', height: '1px', background: 'rgba(0,0,0,0.015)' }} />
-          <div style={{ position: 'absolute', left: '50%', top: '-15%', bottom: '-15%', width: '1px', background: 'rgba(0,0,0,0.015)' }} />
-          <span style={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            fontFamily: 'var(--font-mono)',
-            fontSize: '9px',
-            color: 'rgba(0, 0, 0, 0.15)',
-            letterSpacing: '0.1em'
-          }}>SCALE.CTRL</span>
-        </div>
-      </div>
+    <div className="dynamic-bg-container" aria-hidden="true">
+      <canvas ref={canvasRef} className="dynamic-bg-shader" />
     </div>
   );
 }

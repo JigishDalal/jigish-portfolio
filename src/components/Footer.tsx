@@ -11,7 +11,7 @@ const CONTACT = {
 
 export default function Footer() {
   return (
-    <footer style={{ padding: '80px 24px 64px', position: 'relative', overflow: 'hidden', backgroundColor: 'var(--color-surface)', borderTop: '1px solid var(--color-border)' }}>
+    <footer id="contact" style={{ padding: '80px 24px 64px', position: 'relative', overflow: 'hidden', backgroundColor: 'var(--color-surface)', borderTop: '1px solid var(--color-border)' }}>
       <div className="container" style={{ position: 'relative', zIndex: 1 }}>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '48px', marginBottom: '60px' }}>
           {/* Brand */}
