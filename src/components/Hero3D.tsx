@@ -5,6 +5,7 @@ const HeroScene3D = lazy(() => import('./HeroScene3D'));
 export default function Hero3D() {
   useEffect(() => {
     const hero = document.querySelector<HTMLElement>('.bento-hero');
+    const grid = document.querySelector<HTMLElement>('.hero-bento-grid');
     const cards = Array.from(document.querySelectorAll<HTMLElement>('.hero-bento-grid .bento-card'));
     const statCards = Array.from(document.querySelectorAll<HTMLElement>('.hero-bento-grid .stat-card'));
     const countEls = Array.from(document.querySelectorAll<HTMLElement>('[data-count-to]'));
@@ -22,9 +23,26 @@ export default function Hero3D() {
     const updateScroll = () => {
       if (!hero) return;
 
-      const progress = Math.min(window.scrollY / 360, 1);
+      const heroH = hero.offsetHeight || window.innerHeight;
+      // progress 0→1 over the hero section height
+      const raw = window.scrollY / heroH;
+      const progress = Math.min(Math.max(raw, 0), 1);
+
       hero.style.setProperty('--hero-scroll', progress.toFixed(3));
       hero.classList.toggle('is-scroll-active', progress > 0.05);
+
+      if (!reduceMotion && grid) {
+        // Zoom out: scale from 1.08 → 1.0 as scroll goes 0 → 0.6
+        const scaleProgress = Math.min(progress / 0.6, 1);
+        const scale = 1.08 - scaleProgress * 0.08;
+        // Parallax: shifts up by up to 60px
+        const translateY = -(progress * 60);
+        // Fade: stays opaque until 0.5, then fades to 0 at 1.0
+        const opacity = progress > 0.5 ? Math.max(1 - (progress - 0.5) * 2, 0) : 1;
+
+        grid.style.transform = `scale(${scale.toFixed(4)}) translateY(${translateY.toFixed(2)}px)`;
+        grid.style.opacity = opacity.toFixed(3);
+      }
     };
 
     const onScroll = () => {
@@ -101,43 +119,51 @@ export default function Hero3D() {
   }, []);
 
   return (
-    <section id="home" className="hero bento-hero">
-      {/* 3D Background Canvas — lazy loaded for performance */}
-      <Suspense fallback={null}>
-        <HeroScene3D />
-      </Suspense>
+    <div className="hero-scroll-pin">
+      <section id="home" className="hero bento-hero">
+        {/* 3D Background Canvas — lazy loaded for performance */}
+        <Suspense fallback={null}>
+          <HeroScene3D />
+        </Suspense>
 
-      <div className="hero-bento-grid">
+        <div className="hero-bento-grid">
 
-        {/* Main large typography card */}
-        <div className="bento-card col-span-3 main-title-card">
-          <div className="corner-tl" />
-          <div className="corner-tr" />
-          <div className="corner-bl" />
-          <div className="corner-br" />
-          <p className="hero-kicker">Available for new opportunities</p>
-          <h1 className="bento-title cursor-text-zone">Hi, I'm Jigish</h1>
-          <p className="bento-desc">
-            I specialize in scalable mobile apps, real-time systems, intelligent workflows, and modern user experiences across fintech, healthcare, and enterprise platforms.
-          </p>
-          <div className="hero-actions">
-            <a href="#works" className="bento-btn bento-btn-dark">
-              View projects
-            </a>
-            <a href="#journey" className="bento-btn">
-              About me
-            </a>
+          {/* Main large typography card */}
+          <div className="bento-card col-span-3 main-title-card">
+            <div className="corner-tl" />
+            <div className="corner-tr" />
+            <div className="corner-bl" />
+            <div className="corner-br" />
+            <p className="hero-kicker">Available for new opportunities</p>
+            <h1 className="bento-title cursor-text-zone">Hi, I'm Jigish</h1>
+            <p className="bento-desc">
+              I specialize in scalable mobile apps, real-time systems, intelligent workflows, and modern user experiences across fintech, healthcare, and enterprise platforms.
+            </p>
+            <div className="hero-actions">
+              <a href="#works" className="bento-btn bento-btn-dark">
+                View projects
+              </a>
+              <a href="#journey" className="bento-btn">
+                About me
+              </a>
+            </div>
+            <p className="hero-location">Vadodara, India</p>
+            <div className="hero-scroll-line" />
           </div>
-          <p className="hero-location">Vadodara, India</p>
-          <div className="hero-scroll-line" />
+
+          <div className="bento-card flex-center stat-card hero-side-stat">
+            <div className="stat-number"><span data-count-to="8">0</span>+</div>
+            <div className="stat-label">Years of<br />Experience</div>
+          </div>
+
         </div>
 
-        <div className="bento-card flex-center stat-card hero-side-stat">
-          <div className="stat-number"><span data-count-to="8">0</span>+</div>
-          <div className="stat-label">Years of<br />Experience</div>
+        {/* Scroll indicator */}
+        <div className="hero-scroll-indicator" aria-hidden="true">
+          <span className="scroll-dot" />
+          <span className="scroll-label">Scroll</span>
         </div>
-
-      </div>
-    </section>
+      </section>
+    </div>
   );
 }

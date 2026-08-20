@@ -528,6 +528,65 @@ h5 {
   --hero-scroll: 0;
 }
 
+/* ── Viper-style scroll-pin: hero stays sticky while 200vh of scroll drives the animation */
+.hero-scroll-pin {
+  position: relative;
+  height: 200vh;   /* extra scroll space = animation runway */
+}
+
+.hero-scroll-pin .bento-hero {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  min-height: unset;
+  overflow: hidden;
+}
+
+/* Grid gets will-change for GPU compositing */
+.hero-scroll-pin .hero-bento-grid {
+  will-change: transform, opacity;
+  transition: none;           /* JS drives this directly — no CSS transition lag */
+  transform-origin: center center;
+}
+
+/* ── Animated scroll indicator ── */
+.hero-scroll-indicator {
+  position: absolute;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  opacity: calc(1 - var(--hero-scroll) * 4);
+  pointer-events: none;
+  z-index: 10;
+}
+
+.scroll-dot {
+  display: block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-text);
+  animation: scroll-bounce 1.6s ease-in-out infinite;
+}
+
+@keyframes scroll-bounce {
+  0%, 100% { transform: translateY(0); opacity: 1; }
+  50%       { transform: translateY(10px); opacity: 0.3; }
+}
+
+.scroll-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-text-dim);
+}
+
+
 /* 3D Canvas wrapper — sits behind all bento content */
 .hero-canvas-wrapper {
   position: absolute;
@@ -549,10 +608,9 @@ h5 {
   max-width: 1200px;
   width: 100%;
   margin: 0 auto;
-  transform: translateY(calc(var(--hero-scroll) * -18px));
-  transition: transform 0.18s ease-out;
   position: relative;
   z-index: 1;
+  /* transform & opacity are driven by JS scroll handler */
 }
 
 .bento-hero.is-scroll-active .bento-card {
