@@ -33,11 +33,16 @@ export default function AskJigish() {
     }
   ]);
 
-  const chatEndRef = useRef<HTMLDivElement>(null);
+  const chatContainerRef = useRef<HTMLDivElement>(null);
 
-  // Auto scroll to bottom of chat when new messages arrive
+  // Auto scroll ONLY the inner chatbox container (never touches window scroll)
   useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTo({
+        top: chatContainerRef.current.scrollHeight,
+        behavior: 'smooth'
+      });
+    }
   }, [chatHistory, isTyping]);
 
   const handleAsk = (queryText: string) => {
@@ -161,6 +166,7 @@ export default function AskJigish() {
 
             {/* Conversation Log Container */}
             <div
+              ref={chatContainerRef}
               style={{
                 maxHeight: '360px',
                 overflowY: 'auto',
@@ -228,8 +234,6 @@ export default function AskJigish() {
                   </motion.div>
                 )}
               </AnimatePresence>
-
-              <div ref={chatEndRef} />
             </div>
 
             {/* Quick Prompt Chips */}
