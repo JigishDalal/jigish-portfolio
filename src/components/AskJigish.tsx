@@ -156,12 +156,14 @@ export default function AskJigish() {
           <div className="ask-console">
             {/* Console Header Bar */}
             <div className="ask-console-bar">
-              <span>●</span>
-              <p style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <MessageSquare size={12} style={{ color: '#1eedab' }} />
-                JIGISH AI <i>online</i>
-              </p>
-              <span>{chatHistory.length} messages</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span className="console-dot" />
+                <p style={{ display: 'flex', alignItems: 'center', gap: '6px', margin: 0 }}>
+                  <MessageSquare size={12} style={{ color: '#1eedab' }} />
+                  JIGISH AI <i>online</i>
+                </p>
+              </div>
+              <span className="console-count">{chatHistory.length} {chatHistory.length === 1 ? 'message' : 'messages'}</span>
             </div>
 
             {/* Conversation Log Container */}

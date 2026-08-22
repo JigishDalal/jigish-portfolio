@@ -111,31 +111,48 @@ export default function Nav() {
               top: '52px',
               left: '0',
               right: '0',
-              zIndex: 998,
-              background: 'rgba(245, 245, 247, 0.96)',
-              backdropFilter: 'blur(20px)',
-              WebkitBackdropFilter: 'blur(20px)',
-              borderBottom: '1px solid var(--color-border)',
-              padding: '12px 24px',
+              zIndex: 999,
+              background: 'rgba(10, 11, 18, 0.98)',
+              backdropFilter: 'blur(24px)',
+              WebkitBackdropFilter: 'blur(24px)',
+              borderBottom: '1px solid rgba(255, 255, 255, 0.12)',
+              boxShadow: '0 20px 40px rgba(0, 0, 0, 0.8)',
+              padding: '16px 20px',
               display: 'flex',
               flexDirection: 'column',
-              gap: '12px',
+              gap: '6px',
             }}
           >
-            {NAV_LINKS.map(link => (
-              <Link
-                key={link.label}
-                to={link.href}
-                className={`sub-nav-link ${isLinkActive(link) ? 'active' : ''}`}
-                style={{ fontSize: '14px', padding: '6px 0' }}
-                onClick={(e) => {
-                  setMenuOpen(false);
-                  handleScroll(e, link);
-                }}
-              >
-                {link.label}
-              </Link>
-            ))}
+            {NAV_LINKS.map(link => {
+              const active = isLinkActive(link);
+              return (
+                <Link
+                  key={link.label}
+                  to={link.href}
+                  className={`sub-nav-link ${active ? 'active' : ''}`}
+                  style={{
+                    fontSize: '15px',
+                    fontWeight: 500,
+                    padding: '10px 14px',
+                    borderRadius: '8px',
+                    color: active ? '#1eedab' : '#ffffff',
+                    background: active ? 'rgba(30, 237, 171, 0.1)' : 'transparent',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    transition: 'all 0.2s ease',
+                    textDecoration: 'none'
+                  }}
+                  onClick={(e) => {
+                    setMenuOpen(false);
+                    handleScroll(e, link);
+                  }}
+                >
+                  <span>{link.label}</span>
+                  {active && <span style={{ fontSize: '10px', color: '#1eedab' }}>●</span>}
+                </Link>
+              );
+            })}
           </motion.div>
         )}
       </AnimatePresence>

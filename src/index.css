@@ -2741,23 +2741,22 @@ h5 {
   padding: 0 4px 13px;
 }
 
-.ask-console-bar span {
+.console-dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #49494d;
+  background: #1eedab;
+  box-shadow: 0 0 8px #1eedab;
+  display: inline-block;
+  flex-shrink: 0;
 }
 
-.ask-console-bar span:first-child {
-  background: #ff5f57;
-}
-
-.ask-console-bar span:nth-child(2) {
-  background: #febc2e;
-}
-
-.ask-console-bar span:nth-child(3) {
-  background: #28c840;
+.console-count {
+  font-size: 11px;
+  font-family: var(--font-mono);
+  color: rgba(255, 255, 255, 0.6);
+  letter-spacing: 0.04em;
+  white-space: nowrap;
 }
 
 .ask-console-bar p {
@@ -2859,17 +2858,36 @@ h5 {
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 992px) {
   .ask-layout {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr !important;
+    gap: 36px !important;
   }
 
-  .ask-orbit {
-    display: none;
+  .ask-stage {
+    min-height: auto !important;
+    padding: 0 !important;
+  }
+
+  .ask-orbit,
+  .ask-mascot {
+    display: none !important;
   }
 
   .ask-section {
-    padding: 76px 20px;
+    padding: 60px 16px !important;
+  }
+
+  .ask-proof {
+    flex-wrap: wrap !important;
+    gap: 16px 24px !important;
+    margin-top: 24px !important;
+  }
+}
+
+@media (max-width: 580px) {
+  .ask-prompts {
+    grid-template-columns: 1fr !important;
   }
 }
 
@@ -2959,6 +2977,8 @@ h5 {
 }
 
 .ask-console-bar {
+  display: flex;
+  align-items: center;
   justify-content: space-between;
   height: 28px;
   padding: 0 3px 13px;
@@ -2967,16 +2987,20 @@ h5 {
   letter-spacing: .08em;
 }
 
-.ask-console-bar>span {
-  width: auto;
-  height: auto;
-  border-radius: 0;
-  background: transparent;
+.console-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #1eedab;
+  box-shadow: 0 0 8px #1eedab;
+  display: inline-block;
 }
 
-.ask-console-bar>span:first-child {
-  color: #a6ff6b;
-  text-shadow: 0 0 12px #a6ff6b;
+.console-count {
+  font-size: 11px;
+  font-family: var(--font-mono);
+  color: rgba(255, 255, 255, 0.6);
+  letter-spacing: 0.04em;
 }
 
 .ask-console-bar p {
