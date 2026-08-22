@@ -1,4 +1,5 @@
 import { useEffect, lazy, Suspense } from 'react';
+import WebGLErrorBoundary from './WebGLErrorBoundary';
 
 const HeroScene3D = lazy(() => import('./HeroScene3D'));
 
@@ -61,8 +62,10 @@ export default function Hero3D() {
     <div className="hero-scroll-pin">
       <section id="home" className="hero vesper-hero">
         {/* 3D Background Canvas — lazy loaded for performance */}
-        <Suspense fallback={null}>
-          <HeroScene3D />
+        <Suspense fallback={<div className="hero-fallback-bg" />}>
+          <WebGLErrorBoundary fallback={<div className="hero-fallback-bg" />}>
+            <HeroScene3D />
+          </WebGLErrorBoundary>
         </Suspense>
 
         <div className="vesper-container">

@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { isWebGLSupported } from '../utils/webglSupport';
 
 const vertexShader = `
 attribute vec2 a_position;
@@ -52,6 +53,8 @@ export default function DynamicBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
+    if (!isWebGLSupported()) return;
+
     const canvas = canvasRef.current;
     if (!canvas) return;
 

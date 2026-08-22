@@ -4310,3 +4310,13 @@ footer {
     /* bio on top on mobile */
   }
 }
+
+/* Fallback background when WebGL is disabled or context creation fails */
+.hero-fallback-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 45%, rgba(30, 237, 171, 0.16) 0%, rgba(99, 64, 247, 0.22) 45%, transparent 70%);
+  filter: blur(40px);
+  z-index: 0;
+}
